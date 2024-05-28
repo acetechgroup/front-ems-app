@@ -1,5 +1,5 @@
 #step 1: Build React App
-FROM node:alpine3.18 as build
+FROM node:alpine3.19 as dist
 WORKDIR /app
 COPY package.json .
 RUN npm install
@@ -10,6 +10,6 @@ RUN npm run build
 FROM nginx:1.23-alpine
 WORKDIR /usr/share/nginx/html
 RUN rm -rf *
-COPY --from=build /app/build .
+COPY --from=dist /app/build .
 EXPOSE 80
 ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
